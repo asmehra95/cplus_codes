@@ -478,6 +478,31 @@ struct node* tree_to_CDLL(struct node * root)
     root->right=root;
     return mergeDLL(mergeDLL(root,left),right); // change the order here to inorder / preorder/ postorder traversal
 }
+int lop=0,ml=0;//len of path nd max len;
+int height(struct node *root)
+{
+    if(root==NULL)
+        return 0;
+    lop++;
+    height(root->left);
+    height(root->right);
+    if(lop>ml)
+        ml=lop;
+    lop--;
+    return ml;
+}
+int diameter(struct node *root)
+{
+    if(!root)
+        return 0;
+    int ld=0,rd=0;
+    ld=diameter(root->left);
+    rd=diameter(root->right);
+    int lh=0,rh=0;
+    lh=height(root->left);
+    rh=height(root->right);
+    return max(lh+rh+1,max(ld,rd));
+}
 int main()
 {
     struct node *root,*parent,*childL,*childR,*temp;
@@ -516,13 +541,14 @@ int main()
    struct node *l2=new_node(2);
    //l1->right=l2->left=l1;
    //l2->right=l2->left=l2;
-    l1->right=l1;
+    /*l1->right=l1;
     l2->right=l2;
     l1->left=l1;
     l2->left=l2;
     struct node *temp1=mergeDLL(l1,l2);
     printCDLL(temp1);
     temp1=tree_to_CDLL(root);
-    printCDLL(temp1);
+    printCDLL(temp1);*/
+    cout<<diameter(root);
     return 0;
 }
